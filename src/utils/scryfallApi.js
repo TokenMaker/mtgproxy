@@ -1,0 +1,53 @@
+import axios from 'axios';
+
+// Scryfall asks clients to add a 50-100ms delay between requests
+// https://scryfall.com/docs/api
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const api = axios.create({
+  baseURL: 'https://api.scryfall.com',
+});
+
+let lastRequestTime = 0;
+const RATE_LIMIT_MS = 100;
+
+// Intercept requests to enforce rate limit
+api.interceptors.request.use(async (config) => {
+  const now = Date.now();
+  const timeSinceLastRequest = now - lastRequestTime;
+  
+  if (timeSinceLastRequest < RATE_LIMIT_MS) {
+    await delay(RATE_LIMIT_MS - timeSinceLastRequest);
+  }
+  
+  lastRequestTime = Date.now();
+  return config;
+});
+
+/**
+ * Searches for a card by exact name
+ */
+export const getCardExact = async (cardName) => {
+  try {
+    const response = await api.get('/cards/named', {
+      params: { exact: cardName }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching card ${cardName}:`, error);
+    return null;
+  }
+};
+
+/**
+ * Fetches all printings for a card using the prints_search_uri
+ */
+export const getCardPrints = async (printsSearchUri) => {
+  try {
+    const response = await axios.get(printsSearchUri); // Note: Should probably use the rate-limited api instance if it's scryfall
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching card prints:', error);
+    return [];
+  }
+};

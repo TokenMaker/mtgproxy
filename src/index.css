@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #090014;
+  --color-chrome: #E0E0E0;
+  --color-glass-deep: rgba(26, 16, 60, 0.8);
+  --color-glass-dark: #1a103c;
+  --color-neon-magenta: #FF00FF;
+  --color-neon-cyan: #00FFFF;
+  --color-neon-orange: #FF9900;
+  --color-border-dark: #2D1B4E;
+  
+  --font-heading: 'Orbitron', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-sans: 'Share Tech Mono', monospace; /* Default UI to the mono terminal font */
+}
+
+@custom-variant print (@media print);
+
+/* Global App Styling */
+body {
+  @apply bg-void text-chrome m-0 p-0 overflow-x-hidden font-mono antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading uppercase;
+}
+
+/* Scrollbar styling - Outrun style */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #090014;
+  border-left: 1px solid #2D1B4E;
+}
+::-webkit-scrollbar-thumb {
+  background: #FF00FF;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00FFFF;
+}
+
+/* 
+  Vaporwave Global Effects
+*/
+
+/* Perspective Grid Floor */
+.perspective-grid {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60vh;
+  z-index: 0;
+  background-image: 
+    linear-gradient(transparent 95%, rgba(255, 0, 255, 0.4) 95%), 
+    linear-gradient(90deg, transparent 95%, rgba(255, 0, 255, 0.4) 95%);
+  background-size: 40px 40px;
+  transform-origin: bottom center;
+  transform: perspective(600px) rotateX(70deg) translateY(0px) scale(3);
+  mask-image: linear-gradient(to bottom, transparent, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 100%);
+  pointer-events: none;
+}
+
+/* Floating Blurred Sun */
+.floating-sun {
+  position: fixed;
+  bottom: -20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #FF9900, #FF00FF);
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Text glow utilities */
+.text-glow-magenta {
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+}
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+.text-glow-white {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Box glow utilities */
+.shadow-glow-magenta {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+.shadow-glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+.shadow-glow-cyan-intense {
+  box-shadow: 0 0 20px #00FFFF;
+}
+
+/* Gradient text */
+.text-sunset {
+  background: linear-gradient(to right, #FF9900, #FF00FF, #00FFFF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+/* -------------------------------------------
+   PRINT STYLES FOR EXACT 8.5 x 11 CARDS
+------------------------------------------- */
+@media print {
+  @page {
+    size: 8.5in 11in;
+    margin: 0;
+  }
+
+  body, html {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, sans-serif !important;
+  }
+
+  /* WE DO NOT WANT TO PRINT BLACK BACKGROUNDS OR CYAN GLOWS */
+  * {
+    color: black !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    border-color: black !important;
+    border-radius: 0 !important;
+  }
+
+  /* Force background graphics just for the card artwork itself */
+  img {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Prevent vaporwave art from printing */
+  .perspective-grid,
+  .floating-sun {
+    display: none !important;
+  }
+
+  .print-page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    break-after: page;
+    break-inside: avoid;
+    width: 8.5in !important;
+    height: 11in !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+}
