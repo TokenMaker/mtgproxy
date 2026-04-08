@@ -130,7 +130,9 @@ export const useDeckState = (vibeFilter = 'default') => {
       const data = cardDataMap[name]?.data;
       if (data?.all_parts) {
         data.all_parts.forEach(part => {
-          if (part.component === 'token' || part.component === 'emblem') {
+          const isToken = part.component === 'token';
+          const isEmblem = part.component === 'combo_piece' && part.type_line?.startsWith('Emblem');
+          if (isToken || isEmblem) {
             const cleanTokenName = part.name;
             if (!seenNames.has(cleanTokenName.toLowerCase())) {
                if (!tokens.find(t => t.name === cleanTokenName)) {
