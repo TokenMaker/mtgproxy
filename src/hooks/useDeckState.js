@@ -132,14 +132,10 @@ export const useDeckState = (vibeFilter = 'default') => {
             const cleanTokenName = part.name;
             if (!seenNames.has(cleanTokenName.toLowerCase())) {
                if (!tokens.find(t => t.name === cleanTokenName)) {
-                 // extract the set code from the token URI if possible
-                 // e.g., https://api.scryfall.com/cards/tbro/5/en
-                 let setCode = null;
+                 // Extract UUID from URI: https://api.scryfall.com/cards/{uuid}
                  const uriParts = part.uri?.split('/');
-                 if (uriParts && uriParts.length > 4) {
-                   setCode = uriParts[uriParts.length - 3];
-                 }
-                 tokens.push({ name: cleanTokenName, uri: part.uri, set: setCode });
+                 const uuid = uriParts?.[uriParts.length - 1] || null;
+                 tokens.push({ name: cleanTokenName, uri: part.uri, set: uuid });
                }
             }
           }

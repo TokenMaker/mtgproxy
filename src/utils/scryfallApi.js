@@ -55,8 +55,16 @@ export const getCardPrints = async (printsSearchUri) => {
 /**
  * Searches for a card with specific styling or set requirements
  */
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export const getCardWithVibe = async (cardName, vibe, setCode) => {
   try {
+    // If setCode is a UUID, fetch the token directly by ID
+    if (setCode && UUID_RE.test(setCode)) {
+      const response = await api.get(`/cards/${setCode}`);
+      return response.data;
+    }
+
     // If a specific set is requested, prioritize that
     if (setCode) {
       const response = await api.get('/cards/search', {

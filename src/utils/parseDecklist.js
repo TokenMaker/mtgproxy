@@ -21,12 +21,12 @@ export const parseDecklist = (rawText) => {
       let name = match[2].trim();
       let setCode = null;
       
-      // Attempt to extract set code e.g., "Lightning Bolt (M11) 23" or "Soldier Token (tneo)"
-      const setMatch = name.match(/\(([A-Z0-9]+)\)/i);
+      // Attempt to extract set code e.g., "Lightning Bolt (M11) 23", "Soldier Token (tneo)", or UUID
+      const setMatch = name.match(/\(([A-Z0-9-]+)\)/i);
       if (setMatch) {
         setCode = setMatch[1].toLowerCase();
         // Remove the set code from the name
-        name = name.replace(/\s*\([A-Z0-9]+\)/i, '');
+        name = name.replace(/\s*\([A-Z0-9-]+\)/i, '');
       }
       
       // Also remove any trailing numbers (like collector numbers)
