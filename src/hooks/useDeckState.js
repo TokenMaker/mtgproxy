@@ -39,7 +39,7 @@ export const useDeckState = (vibeFilter = 'default') => {
       // However, if the active fetch was aborted, it's stuck loading. 
       // So we just track fetching promises in a ref, or simply remove the `active` check around state updates.
       // Easiest fix: update state even if active=false, so it doesn't get stuck in 'loading'.
-      const missingNames = uniqueNames.filter(name => !cardDataMap[name] || cardDataMap[name].error);
+      const missingNames = uniqueNames.filter(name => !cardDataMap[name]);
       if (missingNames.length === 0) return;
 
       setIsFetching(true);

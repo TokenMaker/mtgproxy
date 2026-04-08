@@ -60,7 +60,7 @@ export const getCardWithVibe = async (cardName, vibe, setCode) => {
     // If a specific set is requested, prioritize that
     if (setCode) {
       const response = await api.get('/cards/search', {
-        params: { q: `!"${cardName}" set:${setCode}`, order: 'released', dir: 'asc' }
+        params: { q: `!"${cardName}" set:${setCode} include:extras`, order: 'released', dir: 'asc' }
       });
       if (response.data?.data?.length > 0) return response.data.data[0];
     }
