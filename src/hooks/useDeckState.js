@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { parseDecklist } from '../utils/parseDecklist';
-import { getCardExact, getCardWithVibe } from '../utils/scryfallApi';
+import { getCardWithVibe } from '../utils/scryfallApi';
 
 const LOCAL_STORAGE_KEY = 'mtg-deck-generator-raw-text';
 
@@ -120,15 +120,17 @@ export const useDeckState = (vibeFilter = 'default') => {
    * Calculate suggested tokens based on loaded cards
    */
   const suggestedTokens = useMemo(() => {
+    if (parsedItems.length === 0) return [];
+
     const tokens = [];
     // Only looking at names, case insensitive
     const seenNames = new Set(parsedItems.map(i => i.name.toLowerCase()));
-    
+
     for (const name in cardDataMap) {
       const data = cardDataMap[name]?.data;
       if (data?.all_parts) {
         data.all_parts.forEach(part => {
-          if (part.component === 'token') {
+          if (part.component === 'token' || part.component === 'emblem') {
             const cleanTokenName = part.name;
             if (!seenNames.has(cleanTokenName.toLowerCase())) {
                if (!tokens.find(t => t.name === cleanTokenName)) {
