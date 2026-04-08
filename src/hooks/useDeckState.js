@@ -22,6 +22,13 @@ export const useDeckState = (vibeFilter = 'default') => {
     setCardDataMap({});
   }, [vibeFilter]);
 
+  // Clear card cache when decklist is emptied so stale tokens don't persist
+  useEffect(() => {
+    if (parsedItems.length === 0) {
+      setCardDataMap({});
+    }
+  }, [parsedItems]);
+
   // Parse deck internally whenever raw text changes
   const parsedItems = useMemo(() => {
     return parseDecklist(rawText);
