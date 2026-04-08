@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardSheet } from './CardSheet';
 
-export const PrintPreview = ({ flattenedDeck, onCardClick }) => {
+export const PrintPreview = ({ flattenedDeck, onCardClick, bleedEnabled }) => {
   // If no cards, show placeholder
   if (flattenedDeck.length === 0) {
     return (
@@ -29,6 +29,7 @@ export const PrintPreview = ({ flattenedDeck, onCardClick }) => {
           key={index} 
           cards={sheetCards} 
           onCardClick={onCardClick} 
+          bleedEnabled={bleedEnabled}
         />
       ))}
     </div>

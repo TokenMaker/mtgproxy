@@ -51,3 +51,33 @@ export const getCardPrints = async (printsSearchUri) => {
     return [];
   }
 };
+
+/**
+ * Searches for a card with specific styling or set requirements
+ */
+export const getCardWithVibe = async (cardName, vibe, setCode) => {
+  try {
+    // If a specific set is requested, prioritize that
+    if (setCode) {
+      const response = await api.get('/cards/search', {
+        params: { q: `!"${cardName}" set:${setCode}`, order: 'released', dir: 'asc' }
+      });
+      if (response.data?.data?.length > 0) return response.data.data[0];
+    }
+
+    // If retro vibe is requested, try finding an old frame version
+    if (vibe === 'retro') {
+      const response = await api.get('/cards/search', {
+        params: { q: `!"${cardName}" (is:retro OR is:old)`, order: 'released', dir: 'asc' }
+      });
+      if (response.data?.data?.length > 0) return response.data.data[0];
+    }
+    
+    // Fallback to exact search
+    return await getCardExact(cardName);
+  } catch (error) {
+    // If search fails (e.g., no retro version or invalid set), fallback to exact
+    console.warn(`Error fetching vibe/set for ${cardName}, falling back to exact:`, error);
+    return await getCardExact(cardName);
+  }
+};

@@ -9,10 +9,11 @@
   --color-neon-cyan: #00FFFF;
   --color-neon-orange: #FF9900;
   --color-border-dark: #2D1B4E;
-  
+
   --font-heading: 'Orbitron', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
-  --font-sans: 'Share Tech Mono', monospace; /* Default UI to the mono terminal font */
+  --font-sans: 'Share Tech Mono', monospace;
+  /* Default UI to the mono terminal font */
 }
 
 @custom-variant print (@media print);
@@ -22,7 +23,12 @@ body {
   @apply bg-void text-chrome m-0 p-0 overflow-x-hidden font-mono antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @apply font-heading uppercase;
 }
 
@@ -30,14 +36,17 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #090014;
   border-left: 1px solid #2D1B4E;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #FF00FF;
   border-radius: 0;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #00FFFF;
 }
@@ -54,8 +63,8 @@ h1, h2, h3, h4, h5, h6 {
   right: 0;
   height: 60vh;
   z-index: 0;
-  background-image: 
-    linear-gradient(transparent 95%, rgba(255, 0, 255, 0.4) 95%), 
+  background-image:
+    linear-gradient(transparent 95%, rgba(255, 0, 255, 0.4) 95%),
     linear-gradient(90deg, transparent 95%, rgba(255, 0, 255, 0.4) 95%);
   background-size: 40px 40px;
   transform-origin: bottom center;
@@ -85,9 +94,11 @@ h1, h2, h3, h4, h5, h6 {
 .text-glow-magenta {
   text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
 }
+
 .text-glow-cyan {
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
 }
+
 .text-glow-white {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
@@ -96,9 +107,11 @@ h1, h2, h3, h4, h5, h6 {
 .shadow-glow-magenta {
   box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
 }
+
 .shadow-glow-cyan {
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
+
 .shadow-glow-cyan-intense {
   box-shadow: 0 0 20px #00FFFF;
 }
@@ -121,7 +134,8 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
   }
 
-  body, html {
+  body,
+  html {
     background: white !important;
     margin: 0 !important;
     padding: 0 !important;

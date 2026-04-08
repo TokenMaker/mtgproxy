@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardItem } from './CardItem';
 
-export const CardSheet = ({ cards, onCardClick }) => {
+export const CardSheet = ({ cards, onCardClick, bleedEnabled }) => {
   return (
     <div className="print-page bg-white relative overflow-hidden shadow-2xl print:shadow-none print:!w-[8.5in] print:!h-[11in] flex items-center justify-center no-print-bg">
       {/* 
@@ -18,6 +18,7 @@ export const CardSheet = ({ cards, onCardClick }) => {
             key={card.instanceId} 
             card={card} 
             onClick={() => onCardClick(card)} 
+            bleedEnabled={bleedEnabled}
           />
         ))}
       </div>

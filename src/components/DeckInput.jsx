@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 
 export const DeckInput = ({ rawText, setRawText, isFetching }) => {
   return (
@@ -9,6 +9,14 @@ export const DeckInput = ({ rawText, setRawText, isFetching }) => {
           &gt; INPUT.TXT
           {isFetching && <Loader2 className="w-4 h-4 animate-spin text-neon-magenta" />}
         </h2>
+        <button 
+          onClick={() => setRawText('')}
+          className="text-chrome/70 hover:text-neon-magenta transition-colors transition-all flex items-center gap-1 text-[10px] uppercase tracking-widest font-bold"
+          title="Clear Decklist"
+        >
+          <Trash2 className="w-3 h-3" />
+          CLEAR
+        </button>
       </div>
       <div className="relative flex-1 group">
         <textarea

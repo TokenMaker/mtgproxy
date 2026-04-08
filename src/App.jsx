@@ -6,8 +6,10 @@ import { AlternativesModal } from './components/AlternativesModal';
 import { useDeckState } from './hooks/useDeckState';
 
 function App() {
-  const { rawText, setRawText, flattenedDeck, isFetching, overrideCardData } = useDeckState();
-  
+  const [bleedEnabled, setBleedEnabled] = useState(false);
+  const [vibeFilter, setVibeFilter] = useState('default');
+
+  const { rawText, setRawText, flattenedDeck, isFetching, overrideCardData, suggestedTokens } = useDeckState(vibeFilter);
   const [activeCardForSwap, setActiveCardForSwap] = useState(null);
 
   const handleCardClick = (card) => {
@@ -31,6 +33,11 @@ function App() {
         rawText={rawText} 
         setRawText={setRawText} 
         isFetching={isFetching} 
+        bleedEnabled={bleedEnabled}
+        setBleedEnabled={setBleedEnabled}
+        vibeFilter={vibeFilter}
+        setVibeFilter={setVibeFilter}
+        suggestedTokens={suggestedTokens}
       />
       
       {/* 
@@ -41,6 +48,7 @@ function App() {
         <PrintPreview 
           flattenedDeck={flattenedDeck} 
           onCardClick={handleCardClick} 
+          bleedEnabled={bleedEnabled}
         />
         
         {flattenedDeck.length > 0 && <PrintFAB />}

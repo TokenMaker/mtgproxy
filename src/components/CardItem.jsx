@@ -2,7 +2,7 @@ import React from 'react';
 import { Loader2, ImageOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export const CardItem = ({ card, onClick }) => {
+export const CardItem = ({ card, onClick, bleedEnabled }) => {
   // Get best image URI: png, then large, then normal.
   const getImageUrl = (scryfallData, faceIndex) => {
     if (!scryfallData) return null;
@@ -26,7 +26,7 @@ export const CardItem = ({ card, onClick }) => {
 
   return (
     <div 
-      className="relative flex items-center justify-center bg-white cursor-pointer group no-print-bg transition-transform"
+      className={`relative flex items-center justify-center cursor-pointer group no-print-bg transition-transform ${bleedEnabled ? 'bg-black' : 'bg-white'}`}
       style={{
         width: '2.5in',
         height: '3.5in',
@@ -58,8 +58,13 @@ export const CardItem = ({ card, onClick }) => {
         <img 
           src={imageUrl} 
           alt={card.name}
-          className="w-full h-full object-cover"
-          style={{ width: '100%', height: '100%' }}
+          className="w-full h-full"
+          style={{ 
+            width: '100%', 
+            height: '100%',
+            objectFit: bleedEnabled ? 'cover' : 'fill',
+            transform: bleedEnabled ? 'scale(1.02)' : 'none'
+          }}
         />
       )}
 

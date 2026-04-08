@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { parseDecklist } from '../utils/parseDecklist';
-import { getCardExact } from '../utils/scryfallApi';
+import { getCardExact, getCardWithVibe } from '../utils/scryfallApi';
 
 const LOCAL_STORAGE_KEY = 'mtg-deck-generator-raw-text';
 
-export const useDeckState = () => {
+export const useDeckState = (vibeFilter = 'default') => {
   const [rawText, setRawText] = useState(() => {
     return localStorage.getItem(LOCAL_STORAGE_KEY) || '';
   });
@@ -16,6 +16,11 @@ export const useDeckState = () => {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, rawText);
   }, [rawText]);
+
+  // Clear cache if vibe changes, to force refetch
+  useEffect(() => {
+    setCardDataMap({});
+  }, [vibeFilter]);
 
   // Parse deck internally whenever raw text changes
   const parsedItems = useMemo(() => {
@@ -44,7 +49,8 @@ export const useDeckState = () => {
           return { ...prev, [name]: { loading: true } };
         });
 
-        const data = await getCardExact(name);
+        const item = parsedItems.find(i => i.name === name);
+        const data = await getCardWithVibe(name, vibeFilter, item?.set);
         
         setCardDataMap(prev => ({
           ...prev,
@@ -110,11 +116,45 @@ export const useDeckState = () => {
     return list;
   }, [parsedItems, cardDataMap]);
 
+  /**
+   * Calculate suggested tokens based on loaded cards
+   */
+  const suggestedTokens = useMemo(() => {
+    const tokens = [];
+    // Only looking at names, case insensitive
+    const seenNames = new Set(parsedItems.map(i => i.name.toLowerCase()));
+    
+    for (const name in cardDataMap) {
+      const data = cardDataMap[name]?.data;
+      if (data?.all_parts) {
+        data.all_parts.forEach(part => {
+          if (part.component === 'token') {
+            const cleanTokenName = part.name;
+            if (!seenNames.has(cleanTokenName.toLowerCase())) {
+               if (!tokens.find(t => t.name === cleanTokenName)) {
+                 // extract the set code from the token URI if possible
+                 // e.g., https://api.scryfall.com/cards/tbro/5/en
+                 let setCode = null;
+                 const uriParts = part.uri?.split('/');
+                 if (uriParts && uriParts.length > 4) {
+                   setCode = uriParts[uriParts.length - 3];
+                 }
+                 tokens.push({ name: cleanTokenName, uri: part.uri, set: setCode });
+               }
+            }
+          }
+        });
+      }
+    }
+    return tokens;
+  }, [cardDataMap, parsedItems]);
+
   return {
     rawText,
     setRawText,
     flattenedDeck,
     isFetching,
-    overrideCardData
+    overrideCardData,
+    suggestedTokens
   };
 };
